@@ -16,19 +16,18 @@ using ExanimaResrouceSdk;
 namespace ExanimaResourceEditor {
     public partial class ResrouceEditorInterface : Form {
         private const string UNPACK_DIRECTORY = "tempUnpackFolder";
+        private const string REGEX_FILE = "patterns.regex";
+
         private readonly string _resrouceFile;
-        private readonly Regex[] _regexIgnoreStrings;
+        private Regex[] _regexStrings;
+        private bool _regexFilter;
 
         private ResourceFilePacker _resourcePacker;
         private PackedFileInfo _selectedPackedFile;
         private PackedFileInfo[] _packedFiles;
 
         public ResrouceEditorInterface(string resrouceFile) {
-            var regexFile = "ignore.reg";
-            if (File.Exists(regexFile)) {
-                var regexLines = File.ReadAllLines(regexFile);
-                _regexIgnoreStrings = regexLines.Select(i => new Regex(i)).ToArray();
-            }
+            ReLoadRegex();
 
             _resrouceFile = resrouceFile;
             InitializeComponent();
@@ -44,9 +43,7 @@ namespace ExanimaResourceEditor {
 
         private void ResrouceEditorInterface_Load(object sender, EventArgs e) {
             _packedFiles = _resourcePacker.GetPackedFiles();
-            packedFilesListView.Items.Clear();
-            packedFilesListView.Items.AddRange(_packedFiles.Select(i => i.name).ToArray());
-            packedFilesCountStatusLabel.Text = $"Packed Files: {_packedFiles.Length}";
+            ResetDisplayLayout();
         }
 
         private void SelectedPackedFiledChanged(object sender, EventArgs e) {
@@ -134,6 +131,8 @@ namespace ExanimaResourceEditor {
                 return false;
             }
 
+            ReLoadRegex();
+
             if (!Directory.Exists(UNPACK_DIRECTORY)) {
                 Directory.CreateDirectory(UNPACK_DIRECTORY);
             }
@@ -186,9 +185,31 @@ namespace ExanimaResourceEditor {
             ResrouceEditorInterface_Load(default, default);
         }
 
+        private void EditRegexMatchesClicked(object sender, EventArgs e) {
+            if (!SetupEditor()) {
+                return;
+            }
+
+            var openFile = new OpenFileDialog();
+            if (openFile.ShowDialog() == DialogResult.OK) {
+                var fileData = File.ReadAllBytes(openFile.FileName);
+
+                var matchedFiles = _packedFiles.Where(i => _regexStrings.Any(reg => reg.IsMatch(i.name)));
+
+                foreach (var fileToReplace in matchedFiles) {
+                    File.WriteAllBytes(fileToReplace.coldStorageLocation, fileData);
+                }
+
+                _packedFiles = ResourceFilePacker.UpdatePackedFileData(_packedFiles);
+
+                RepackButtonClicked(default, default);
+                ResrouceEditorInterface_Load(default, default);
+            }
+        }
+
         private void WriteColdStorageLocation(PackedFileInfo[] newOrder) {
             for (var i = 0; i < _packedFiles.Length; i++) {
-                if (_regexIgnoreStrings != null && _regexIgnoreStrings.Any(reg => reg.IsMatch(_packedFiles[i].name))) {
+                if (_regexStrings != null && _regexStrings.Any(reg => reg.IsMatch(_packedFiles[i].name))) {
                     continue;
                 }
 
@@ -197,6 +218,55 @@ namespace ExanimaResourceEditor {
                 _packedFiles[i].coldStorageLocation = $"{UNPACK_DIRECTORY}{Path.DirectorySeparatorChar}{newOrder[i].name}{fileExt}";
                 _packedFiles[i].size = newOrder[i].size;
             }
+        }
+
+        private void EditRegexButtonClicked(object sender, EventArgs e) {
+            if (!File.Exists(REGEX_FILE)) {
+                File.WriteAllBytes(REGEX_FILE, Array.Empty<byte>());
+            }
+
+            Process.Start("notepad.exe", REGEX_FILE);
+        }
+
+        private void ToggleRegexFilterClicked(object sender, EventArgs e) {
+            _regexFilter = true;
+            ResetDisplayLayout();
+        }
+
+        private void UnFilterDisplayClicked(object sender, EventArgs e) {
+            _regexFilter = false;
+            ResetDisplayLayout();
+        }
+
+        private void ResetDisplayLayout() {
+            packedFilesListView.Items.Clear();
+
+            var displayFiles = _regexStrings != null && _regexFilter
+                ? _packedFiles.Where(i => _regexStrings.Any(reg => reg.IsMatch(i.name)))
+                : _packedFiles;
+
+            packedFilesListView.Items.AddRange(displayFiles.Select(i => i.name).ToArray());
+            packedFilesCountStatusLabel.Text = $"Packed Files: {_packedFiles.Length}";
+        }
+
+        private void ReLoadRegex() {
+            if (File.Exists(REGEX_FILE)) {
+                var regexLines = File.ReadAllLines(REGEX_FILE);
+                _regexStrings = regexLines.Select(i => new Regex(i)).ToArray();
+            }
+        }
+
+        private void QuickViewButtonClicked(object sender, EventArgs e) {
+            if (packedFilesListView.SelectedItem is null) {
+                MessageBox.Show("Please select an item to quick view.");
+                return;
+            }
+
+            if (!SetupEditor()) {
+                return;
+            }
+
+            Process.Start(_selectedPackedFile.coldStorageLocation);
         }
     }
 }

@@ -29,6 +29,7 @@ namespace ExanimaResourceEditor
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ResrouceEditorInterface));
 			this.packedFilesListView = new System.Windows.Forms.ListBox();
 			this.resrouceInformationGroupBox = new System.Windows.Forms.GroupBox();
 			this.packedFileSizeLabel = new System.Windows.Forms.Label();
@@ -42,9 +43,15 @@ namespace ExanimaResourceEditor
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.packedFilesCountStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.selectedFileStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+			this.regexMatchingToolButton = new System.Windows.Forms.ToolStripSplitButton();
+			this.unFilterDisplayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toggleDisplayFilterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.editRegexButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.moddingActionGroupBox = new System.Windows.Forms.GroupBox();
 			this.randomizeFileDataButton = new System.Windows.Forms.Button();
 			this.reverseGameDataButton = new System.Windows.Forms.Button();
+			this.button1 = new System.Windows.Forms.Button();
+			this.quickViewFileButton = new System.Windows.Forms.Button();
 			this.resrouceInformationGroupBox.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
 			this.moddingActionGroupBox.SuspendLayout();
@@ -162,7 +169,8 @@ namespace ExanimaResourceEditor
 			// 
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.packedFilesCountStatusLabel,
-            this.selectedFileStatusLabel});
+            this.selectedFileStatusLabel,
+            this.regexMatchingToolButton});
 			this.statusStrip1.Location = new System.Drawing.Point(0, 428);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.Size = new System.Drawing.Size(800, 22);
@@ -181,21 +189,58 @@ namespace ExanimaResourceEditor
 			this.selectedFileStatusLabel.Size = new System.Drawing.Size(78, 17);
 			this.selectedFileStatusLabel.Text = "Selected File: ";
 			// 
+			// regexMatchingToolButton
+			// 
+			this.regexMatchingToolButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+			this.regexMatchingToolButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.regexMatchingToolButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.unFilterDisplayToolStripMenuItem,
+            this.toggleDisplayFilterToolStripMenuItem,
+            this.editRegexButton});
+			this.regexMatchingToolButton.Image = ((System.Drawing.Image)(resources.GetObject("regexMatchingToolButton.Image")));
+			this.regexMatchingToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.regexMatchingToolButton.Name = "regexMatchingToolButton";
+			this.regexMatchingToolButton.Size = new System.Drawing.Size(109, 20);
+			this.regexMatchingToolButton.Text = "Regex Matching";
+			this.regexMatchingToolButton.ToolTipText = "Toggle Regex Filter";
+			// 
+			// unFilterDisplayToolStripMenuItem
+			// 
+			this.unFilterDisplayToolStripMenuItem.Name = "unFilterDisplayToolStripMenuItem";
+			this.unFilterDisplayToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+			this.unFilterDisplayToolStripMenuItem.Text = "UnFilter Display";
+			this.unFilterDisplayToolStripMenuItem.Click += new System.EventHandler(this.UnFilterDisplayClicked);
+			// 
+			// toggleDisplayFilterToolStripMenuItem
+			// 
+			this.toggleDisplayFilterToolStripMenuItem.Name = "toggleDisplayFilterToolStripMenuItem";
+			this.toggleDisplayFilterToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+			this.toggleDisplayFilterToolStripMenuItem.Text = "Filter Display";
+			this.toggleDisplayFilterToolStripMenuItem.Click += new System.EventHandler(this.ToggleRegexFilterClicked);
+			// 
+			// editRegexButton
+			// 
+			this.editRegexButton.Name = "editRegexButton";
+			this.editRegexButton.Size = new System.Drawing.Size(156, 22);
+			this.editRegexButton.Text = "Edit Regex";
+			this.editRegexButton.Click += new System.EventHandler(this.EditRegexButtonClicked);
+			// 
 			// moddingActionGroupBox
 			// 
 			this.moddingActionGroupBox.Controls.Add(this.randomizeFileDataButton);
 			this.moddingActionGroupBox.Controls.Add(this.reverseGameDataButton);
+			this.moddingActionGroupBox.Controls.Add(this.button1);
 			this.moddingActionGroupBox.Location = new System.Drawing.Point(433, 155);
 			this.moddingActionGroupBox.Name = "moddingActionGroupBox";
-			this.moddingActionGroupBox.Size = new System.Drawing.Size(355, 120);
+			this.moddingActionGroupBox.Size = new System.Drawing.Size(355, 109);
 			this.moddingActionGroupBox.TabIndex = 5;
 			this.moddingActionGroupBox.TabStop = false;
-			this.moddingActionGroupBox.Text = "Modding - Use \'ignore.reg\' to Ignore Regex matched files";
+			this.moddingActionGroupBox.Text = "Modding - Use \'ignore.regex\' to Ignore Regex matched files";
 			// 
 			// randomizeFileDataButton
 			// 
 			this.randomizeFileDataButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.randomizeFileDataButton.Location = new System.Drawing.Point(6, 48);
+			this.randomizeFileDataButton.Location = new System.Drawing.Point(6, 47);
 			this.randomizeFileDataButton.Name = "randomizeFileDataButton";
 			this.randomizeFileDataButton.Size = new System.Drawing.Size(343, 23);
 			this.randomizeFileDataButton.TabIndex = 2;
@@ -206,13 +251,35 @@ namespace ExanimaResourceEditor
 			// reverseGameDataButton
 			// 
 			this.reverseGameDataButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.reverseGameDataButton.Location = new System.Drawing.Point(6, 19);
+			this.reverseGameDataButton.Location = new System.Drawing.Point(6, 18);
 			this.reverseGameDataButton.Name = "reverseGameDataButton";
 			this.reverseGameDataButton.Size = new System.Drawing.Size(343, 23);
 			this.reverseGameDataButton.TabIndex = 2;
 			this.reverseGameDataButton.Text = "Reverse File Data And Names";
 			this.reverseGameDataButton.UseVisualStyleBackColor = true;
 			this.reverseGameDataButton.Click += new System.EventHandler(this.ReverseGameDataClick);
+			// 
+			// button1
+			// 
+			this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.button1.Location = new System.Drawing.Point(6, 76);
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size(343, 23);
+			this.button1.TabIndex = 2;
+			this.button1.Text = "Edit All Regex Matches";
+			this.button1.UseVisualStyleBackColor = true;
+			this.button1.Click += new System.EventHandler(this.EditRegexMatchesClicked);
+			// 
+			// quickViewFileButton
+			// 
+			this.quickViewFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.quickViewFileButton.Location = new System.Drawing.Point(433, 281);
+			this.quickViewFileButton.Name = "quickViewFileButton";
+			this.quickViewFileButton.Size = new System.Drawing.Size(355, 23);
+			this.quickViewFileButton.TabIndex = 2;
+			this.quickViewFileButton.Text = "Quick View Selected File";
+			this.quickViewFileButton.UseVisualStyleBackColor = true;
+			this.quickViewFileButton.Click += new System.EventHandler(this.QuickViewButtonClicked);
 			// 
 			// ResrouceEditorInterface
 			// 
@@ -222,6 +289,7 @@ namespace ExanimaResourceEditor
 			this.Controls.Add(this.moddingActionGroupBox);
 			this.Controls.Add(this.statusStrip1);
 			this.Controls.Add(this.repackButton);
+			this.Controls.Add(this.quickViewFileButton);
 			this.Controls.Add(this.unpackAllFilesButton);
 			this.Controls.Add(this.unpackFileButton);
 			this.Controls.Add(this.editFileButton);
@@ -259,6 +327,12 @@ namespace ExanimaResourceEditor
         private System.Windows.Forms.GroupBox moddingActionGroupBox;
         private System.Windows.Forms.Button reverseGameDataButton;
         private System.Windows.Forms.Button randomizeFileDataButton;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ToolStripSplitButton regexMatchingToolButton;
+        private System.Windows.Forms.ToolStripMenuItem toggleDisplayFilterToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editRegexButton;
+        private System.Windows.Forms.ToolStripMenuItem unFilterDisplayToolStripMenuItem;
+        private System.Windows.Forms.Button quickViewFileButton;
     }
 }
 
