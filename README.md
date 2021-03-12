@@ -5,8 +5,9 @@ This is a GUI application to allow the community to edit or change resource pack
 # Howto:
 You cannot launch the exe, you must supply it arguments via console or windows explorer drag & drop.  
 Drag the RPK file onto the executable. You will be displayed with the packed filenames.
+![DragAndDrop](https://raw.githubusercontent.com/PoofImaFox/ExanimaResourceEditor/master/HowToLaunch.gif)
 
-![enter image description here](https://i.gyazo.com/391c3a0dc16994f39f694bcb1daf99fb.png)
+![UserInterface](https://i.gyazo.com/391c3a0dc16994f39f694bcb1daf99fb.png)
 
 # Reverse File Data And Names:
 This button will reverse the file data and the file names. So the last item in the list becomes the data for the first item in the list reversing all the packed files in their respective order. This operation is reversible by doing it again.
