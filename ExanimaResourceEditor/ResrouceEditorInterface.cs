@@ -229,11 +229,13 @@ namespace ExanimaResourceEditor {
         }
 
         private void ToggleRegexFilterClicked(object sender, EventArgs e) {
+            ReLoadRegex();
             _regexFilter = true;
             ResetDisplayLayout();
         }
 
         private void UnFilterDisplayClicked(object sender, EventArgs e) {
+            ReLoadRegex();
             _regexFilter = false;
             ResetDisplayLayout();
         }
