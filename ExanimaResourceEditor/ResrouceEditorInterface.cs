@@ -18,6 +18,7 @@ namespace ExanimaResourceEditor {
         private const string UNPACK_DIRECTORY = "tempUnpackFolder";
         private const string REGEX_FILE = "patterns.regex";
 
+        private readonly string _windowTitle;
         private readonly string _resrouceFile;
         private Regex[] _regexStrings;
         private bool _regexFilter;
@@ -33,6 +34,8 @@ namespace ExanimaResourceEditor {
             InitializeComponent();
 
             _resourcePacker = new ResourceFilePacker(_resrouceFile);
+            _windowTitle = Text;
+            Text = $"{_windowTitle} - Packed '{Path.GetFullPath(_resrouceFile)}'";
         }
 
         ~ResrouceEditorInterface() {
@@ -89,6 +92,8 @@ namespace ExanimaResourceEditor {
             Directory.Delete(UNPACK_DIRECTORY, true);
 
             repackButton.Enabled = false;
+            ResetDisplayLayout();
+            Text = $"{_windowTitle} - Packed '{Path.GetFullPath(_resrouceFile)}'";
         }
 
         private void EditPackedFileClicked(object sender, EventArgs e) {
@@ -115,6 +120,62 @@ namespace ExanimaResourceEditor {
             }
 
             SelectedPackedFiledChanged(default, default);
+        }
+
+        private void AddFileButtonClicked(object sender, EventArgs e) {
+            if (!SetupEditor()) {
+                return;
+            }
+
+            var openFile = new OpenFileDialog();
+            if (openFile.ShowDialog() == DialogResult.OK) {
+                var fileName = Path.GetFileName(openFile.FileName);
+
+                fileName = fileName.Split('.')[0]
+                    ?? throw new Exception($"There was an unspecified error with the file name '{openFile.FileName}'");
+
+                var fileData = File.ReadAllBytes(openFile.FileName);
+                fileName = fileName.Length > 16
+                    ? new string(fileName.Take(16).ToArray())
+                    : fileName;
+
+                var packedFileLocation = $"{UNPACK_DIRECTORY}\\{fileName}";
+                File.WriteAllBytes(packedFileLocation, fileData);
+
+                var fileInfo = new FileInfo(packedFileLocation);
+                Array.Resize(ref _packedFiles, _packedFiles.Length + 1);
+                var packedFile = new PackedFileInfo() {
+                    coldStorageLocation = openFile.FileName,
+                    name = fileInfo.Name.ToLower(),
+                    size = (uint)fileInfo.Length,
+                    extension = fileInfo.Extension
+                };
+
+                _packedFiles[_packedFiles.Length - 1] = packedFile;
+                _packedFiles = ResourceFilePacker.UpdatePackedFileData(_packedFiles);
+                ResetDisplayLayout();
+            }
+        }
+
+        private void RemoveFileClicked(object sender, EventArgs e) {
+            if (packedFilesListView.SelectedItem is null) {
+                MessageBox.Show("Please select an item to remove.");
+                return;
+            }
+
+            if (!SetupEditor()) {
+                return;
+            }
+
+            var selectedFile = _packedFiles.Single(i =>
+                i.name == (string)packedFilesListView.SelectedItem);
+
+            File.Delete(selectedFile.coldStorageLocation);
+
+            var indexItemToRemove = Array.IndexOf(_packedFiles, selectedFile);
+            _packedFiles = _packedFiles.RemoveAt(indexItemToRemove);
+            _packedFiles = ResourceFilePacker.UpdatePackedFileData(_packedFiles);
+            ResetDisplayLayout();
         }
 
         private bool SetupEditor() {
@@ -146,6 +207,7 @@ namespace ExanimaResourceEditor {
                 ?? throw new Exception("An error occurred while unpacking...");
 
             repackButton.Enabled = true;
+            Text = $"{_windowTitle} - Unpacked '{Path.GetFullPath(UNPACK_DIRECTORY)}'";
             return true;
         }
 

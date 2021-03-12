@@ -104,6 +104,11 @@ namespace ExanimaResrouceSdk {
             if (buffer.Take(4).SequenceEqual(FileHeaders.Wave)) {
                 return "wav";
             }
+
+            if (buffer.Take(4).SequenceEqual(FileHeaders.Texture)) {
+                return "dds";
+            }
+
             _gameFileData.Position = returnTo;
             return default;
         }

@@ -52,6 +52,8 @@ namespace ExanimaResourceEditor
 			this.reverseGameDataButton = new System.Windows.Forms.Button();
 			this.button1 = new System.Windows.Forms.Button();
 			this.quickViewFileButton = new System.Windows.Forms.Button();
+			this.addFileButton = new System.Windows.Forms.Button();
+			this.removeFileButton = new System.Windows.Forms.Button();
 			this.resrouceInformationGroupBox.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
 			this.moddingActionGroupBox.SuspendLayout();
@@ -65,7 +67,7 @@ namespace ExanimaResourceEditor
 			this.packedFilesListView.FormattingEnabled = true;
 			this.packedFilesListView.Location = new System.Drawing.Point(0, 0);
 			this.packedFilesListView.Name = "packedFilesListView";
-			this.packedFilesListView.Size = new System.Drawing.Size(427, 420);
+			this.packedFilesListView.Size = new System.Drawing.Size(427, 446);
 			this.packedFilesListView.TabIndex = 0;
 			this.packedFilesListView.SelectedIndexChanged += new System.EventHandler(this.SelectedPackedFiledChanged);
 			// 
@@ -79,7 +81,7 @@ namespace ExanimaResourceEditor
 			this.resrouceInformationGroupBox.Controls.Add(this.packedFileNameLabel);
 			this.resrouceInformationGroupBox.Location = new System.Drawing.Point(433, 12);
 			this.resrouceInformationGroupBox.Name = "resrouceInformationGroupBox";
-			this.resrouceInformationGroupBox.Size = new System.Drawing.Size(355, 137);
+			this.resrouceInformationGroupBox.Size = new System.Drawing.Size(355, 175);
 			this.resrouceInformationGroupBox.TabIndex = 1;
 			this.resrouceInformationGroupBox.TabStop = false;
 			this.resrouceInformationGroupBox.Text = "Resrouce Information";
@@ -123,7 +125,7 @@ namespace ExanimaResourceEditor
 			// editFileButton
 			// 
 			this.editFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.editFileButton.Location = new System.Drawing.Point(433, 368);
+			this.editFileButton.Location = new System.Drawing.Point(433, 406);
 			this.editFileButton.Name = "editFileButton";
 			this.editFileButton.Size = new System.Drawing.Size(355, 23);
 			this.editFileButton.TabIndex = 2;
@@ -135,7 +137,7 @@ namespace ExanimaResourceEditor
 			// 
 			this.repackButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.repackButton.Enabled = false;
-			this.repackButton.Location = new System.Drawing.Point(433, 397);
+			this.repackButton.Location = new System.Drawing.Point(433, 435);
 			this.repackButton.Name = "repackButton";
 			this.repackButton.Size = new System.Drawing.Size(355, 23);
 			this.repackButton.TabIndex = 3;
@@ -146,7 +148,7 @@ namespace ExanimaResourceEditor
 			// unpackFileButton
 			// 
 			this.unpackFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.unpackFileButton.Location = new System.Drawing.Point(433, 339);
+			this.unpackFileButton.Location = new System.Drawing.Point(433, 348);
 			this.unpackFileButton.Name = "unpackFileButton";
 			this.unpackFileButton.Size = new System.Drawing.Size(355, 23);
 			this.unpackFileButton.TabIndex = 2;
@@ -157,7 +159,7 @@ namespace ExanimaResourceEditor
 			// unpackAllFilesButton
 			// 
 			this.unpackAllFilesButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.unpackAllFilesButton.Location = new System.Drawing.Point(433, 310);
+			this.unpackAllFilesButton.Location = new System.Drawing.Point(433, 319);
 			this.unpackAllFilesButton.Name = "unpackAllFilesButton";
 			this.unpackAllFilesButton.Size = new System.Drawing.Size(355, 23);
 			this.unpackAllFilesButton.TabIndex = 2;
@@ -171,7 +173,7 @@ namespace ExanimaResourceEditor
             this.packedFilesCountStatusLabel,
             this.selectedFileStatusLabel,
             this.regexMatchingToolButton});
-			this.statusStrip1.Location = new System.Drawing.Point(0, 428);
+			this.statusStrip1.Location = new System.Drawing.Point(0, 466);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.Size = new System.Drawing.Size(800, 22);
 			this.statusStrip1.TabIndex = 4;
@@ -273,7 +275,7 @@ namespace ExanimaResourceEditor
 			// quickViewFileButton
 			// 
 			this.quickViewFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.quickViewFileButton.Location = new System.Drawing.Point(433, 281);
+			this.quickViewFileButton.Location = new System.Drawing.Point(433, 290);
 			this.quickViewFileButton.Name = "quickViewFileButton";
 			this.quickViewFileButton.Size = new System.Drawing.Size(355, 23);
 			this.quickViewFileButton.TabIndex = 2;
@@ -281,17 +283,41 @@ namespace ExanimaResourceEditor
 			this.quickViewFileButton.UseVisualStyleBackColor = true;
 			this.quickViewFileButton.Click += new System.EventHandler(this.QuickViewButtonClicked);
 			// 
+			// addFileButton
+			// 
+			this.addFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.addFileButton.Location = new System.Drawing.Point(619, 377);
+			this.addFileButton.Name = "addFileButton";
+			this.addFileButton.Size = new System.Drawing.Size(169, 23);
+			this.addFileButton.TabIndex = 2;
+			this.addFileButton.Text = "Add New File";
+			this.addFileButton.UseVisualStyleBackColor = true;
+			this.addFileButton.Click += new System.EventHandler(this.AddFileButtonClicked);
+			// 
+			// removeFileButton
+			// 
+			this.removeFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.removeFileButton.Location = new System.Drawing.Point(433, 377);
+			this.removeFileButton.Name = "removeFileButton";
+			this.removeFileButton.Size = new System.Drawing.Size(169, 23);
+			this.removeFileButton.TabIndex = 2;
+			this.removeFileButton.Text = "Remove File";
+			this.removeFileButton.UseVisualStyleBackColor = true;
+			this.removeFileButton.Click += new System.EventHandler(this.RemoveFileClicked);
+			// 
 			// ResrouceEditorInterface
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(800, 450);
+			this.ClientSize = new System.Drawing.Size(800, 488);
 			this.Controls.Add(this.moddingActionGroupBox);
 			this.Controls.Add(this.statusStrip1);
 			this.Controls.Add(this.repackButton);
 			this.Controls.Add(this.quickViewFileButton);
+			this.Controls.Add(this.removeFileButton);
 			this.Controls.Add(this.unpackAllFilesButton);
 			this.Controls.Add(this.unpackFileButton);
+			this.Controls.Add(this.addFileButton);
 			this.Controls.Add(this.editFileButton);
 			this.Controls.Add(this.resrouceInformationGroupBox);
 			this.Controls.Add(this.packedFilesListView);
@@ -333,6 +359,8 @@ namespace ExanimaResourceEditor
         private System.Windows.Forms.ToolStripMenuItem editRegexButton;
         private System.Windows.Forms.ToolStripMenuItem unFilterDisplayToolStripMenuItem;
         private System.Windows.Forms.Button quickViewFileButton;
+        private System.Windows.Forms.Button addFileButton;
+        private System.Windows.Forms.Button removeFileButton;
     }
 }
 
