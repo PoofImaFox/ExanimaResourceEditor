@@ -296,7 +296,7 @@ namespace ExanimaResourceEditor
 			this.Controls.Add(this.resrouceInformationGroupBox);
 			this.Controls.Add(this.packedFilesListView);
 			this.Name = "ResrouceEditorInterface";
-			this.Text = "Resrouce Editor";
+			this.Text = "Resource Editor";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ResrouceEditorInterface_FormClosing);
 			this.Load += new System.EventHandler(this.ResrouceEditorInterface_Load);
 			this.resrouceInformationGroupBox.ResumeLayout(false);
