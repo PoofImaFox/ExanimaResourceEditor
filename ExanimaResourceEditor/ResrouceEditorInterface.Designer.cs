@@ -139,7 +139,7 @@ namespace ExanimaResourceEditor
 			this.repackButton.Name = "repackButton";
 			this.repackButton.Size = new System.Drawing.Size(355, 23);
 			this.repackButton.TabIndex = 3;
-			this.repackButton.Text = "Re-Pack To Resrouce";
+			this.repackButton.Text = "Re-Pack To Resource";
 			this.repackButton.UseVisualStyleBackColor = true;
 			this.repackButton.Click += new System.EventHandler(this.RepackButtonClicked);
 			// 
