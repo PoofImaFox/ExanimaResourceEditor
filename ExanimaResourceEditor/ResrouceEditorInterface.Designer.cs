@@ -235,7 +235,7 @@ namespace ExanimaResourceEditor
 			this.moddingActionGroupBox.Size = new System.Drawing.Size(355, 109);
 			this.moddingActionGroupBox.TabIndex = 5;
 			this.moddingActionGroupBox.TabStop = false;
-			this.moddingActionGroupBox.Text = "Modding - Use \'ignore.regex\' to Ignore Regex matched files";
+			this.moddingActionGroupBox.Text = "Modding - Use \'patterns.regex\' to Ignore Regex matched files";
 			// 
 			// randomizeFileDataButton
 			// 
